@@ -32,3 +32,8 @@ export const closeTaskForm = (closeModal) => ({
   type: CLOSE_TASK_FORM,
   payload: closeModal,
 });
+
+export const editMode = (mode) => ({
+  type: SET_FORM_MODE,
+  payload: mode,
+});

@@ -25,24 +25,86 @@ const TaskForm = ({
   // projects = [],
   loading = false,
 }) => {
+  console.log("initialData", initialData);
+
   const {
     register,
     watch,
     handleSubmit,
     control,
+    reset,
     formState: { isValid, errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: initialData || {
-      title: "",
-      description: "",
-      taskType: "Feature",
-      priority: "Medium",
-      acceptanceCriteria: [""],
-      subtasks: [{ title: "", completed: false }],
-      researchQuestions: [{ questions: "" }],
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          title: initialData.title,
+          description: initialData.description,
+          taskType: initialData.taskType,
+          priority: initialData.priority,
+          acceptanceCriteria: initialData.acceptanceCriteria?.length
+            ? initialData.acceptanceCriteria
+            : [""],
+          subtasks: initialData.subtasks?.length
+            ? initialData.subtasks
+            : [{ title: "", completed: false }],
+          researchQuestions: initialData.researchQuestions?.length
+            ? // for array of strings (update if you use array of objects)
+              initialData.researchQuestions
+            : [""],
+        }
+      : {
+          title: "",
+          description: "",
+          taskType: "Feature",
+          priority: "Medium",
+          acceptanceCriteria: [""],
+          subtasks: [{ title: "", completed: false }],
+          researchQuestions: [""],
+        },
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        ...initialData,
+        title: initialData.title,
+        description: initialData.description,
+        taskType: initialData.taskType,
+        priority: initialData.priority,
+        acceptanceCriteria: initialData.acceptanceCriteria?.length
+          ? initialData.acceptanceCriteria
+          : [""],
+        subtasks: initialData.subtasks?.length
+          ? initialData.subtasks
+          : [{ title: "", completed: false }],
+        researchQuestions: initialData.researchQuestions?.length
+          ? // for array of strings only (see above)
+            initialData.researchQuestions
+          : [""],
+      });
+    }
+  }, [initialData, reset]);
+
+  // const {
+  //   register,
+  //   watch,
+  //   handleSubmit,
+  //   control,
+  //   formState: { isValid, errors },
+  // } = useForm({
+  //   mode: "onChange",
+  //   defaultValues: initialData || {
+  //     title: "",
+  //     description: "",
+  //     taskType: "Feature",
+  //     priority: "Medium",
+  //     acceptanceCriteria: [""],
+  //     subtasks: [{ title: "", completed: false }],
+  //     researchQuestions: [{ value: "" }],
+  //   },
+  // });
 
   const {
     fields: acceptanceCriteriaFields,
@@ -64,8 +126,8 @@ const TaskForm = ({
 
   const {
     fields: researchQuestionsFields,
-    append: appendResearchQuestions,
-    remove: removeResearchQuestions,
+    append: appendResearch,
+    remove: removeResearch,
   } = useFieldArray({
     control,
     name: "researchQuestions",
@@ -239,11 +301,17 @@ const TaskForm = ({
             <div className="form-group">
               <label>Research Questions</label>
               {researchQuestionsFields.map((field, idx) => (
-                <div key={field.id} className="array-item">
+                <div
+                  key={field.id}
+                  className="array-item"
+                  style={{ marginBottom: 10 }}
+                >
                   <input
                     {...register(`researchQuestions.${idx}`, {
                       required: "Question is required",
                     })}
+                    style={{ width: "80%" }}
+                    // placeholder={`Question ${idx + 1}`}
                     placeholder={`Question ${idx + 1}`}
                   />
                   <button type="button" onClick={() => removeResearch(idx)}>
@@ -256,10 +324,14 @@ const TaskForm = ({
                   )}
                 </div>
               ))}
-              <button type="button" onClick={() => appendResearch("")}>
+              <button
+                type="button"
+                onClick={() => appendResearch([{ value: "" }])}
+              >
                 + Add Question
               </button>
             </div>
+
             {/* Expected Outcomes */}
             <div className="form-group">
               <label>Expected Outcomes *</label>

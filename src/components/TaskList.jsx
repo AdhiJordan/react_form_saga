@@ -1,16 +1,16 @@
 // Task List Component
 // TODO: Implement task list with filtering and sorting
 
-import React from 'react';
-import TaskCard from './TaskCard';
+import React from "react";
+import TaskCard from "./TaskCard";
 
-const TaskList = ({ 
-  tasks = [], 
-  loading = false, 
-  onEditTask, 
-  onDeleteTask 
+const TaskList = ({
+  tasks = [],
+  loading = false,
+  onEditTask,
+  onDeleteTask,
 }) => {
-
+  console.log("2222", tasks);
   // TODO: Implement task list functionality
   // Requirements:
   // 1. Display tasks in a grid or list layout
@@ -51,7 +51,7 @@ const TaskList = ({
       </div>
 
       <div className="task-grid">
-        {tasks.map(task => (
+        {tasks.map((task) => (
           <TaskCard
             key={task.id}
             task={task}

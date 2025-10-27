@@ -1,7 +1,7 @@
 // Main Dashboard Component
 // TODO: Implement the main container component
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
@@ -28,11 +28,16 @@ import FilterBar from "./FilterBar";
 // closeTaskForm,
 // setFilters,
 //} from "../store/actions";
-import { openTaskForm, closeTaskForm } from "../store/actions/uiActions";
+import {
+  openTaskForm,
+  closeTaskForm,
+  editMode,
+} from "../store/actions/uiActions";
 
 const TaskDashboard = () => {
-  const dispatch = useDispatch();
+  const [getTaskId, setTaskId] = useState(null);
 
+  const dispatch = useDispatch();
   const taskForm = useSelector((state) => state.ui.taskForm);
   const tasksList = useSelector((state) => state.tasks.items);
 
@@ -53,11 +58,17 @@ const TaskDashboard = () => {
   };
 
   const handleEditTask = (taskId) => {
+    dispatch(openTaskForm(true));
+    setTaskId(taskId);
+    dispatch(editMode("edit"));
     // TODO: Dispatch open form action for edit mode
+    dispatch({ type: "UPDATE_TASK_REQUEST", payload: { id: taskId } });
   };
 
   const handleDeleteTask = (taskId) => {
+    console.log("333", taskId);
     // TODO: Show confirmation and dispatch delete action
+    dispatch({ type: "DELETE_TASK_REQUEST", payload: { id: taskId } });
   };
 
   const handleFormSubmit = (data) => {
@@ -113,7 +124,7 @@ const TaskDashboard = () => {
     // TODO: Dispatch filter change action
   };
 
-  console.log("tasksList", tasksList);
+  console.log("taskForm", taskForm);
 
   return (
     <div className="task-dashboard">
@@ -148,7 +159,9 @@ const TaskDashboard = () => {
       <TaskForm
         isOpen={taskForm.isOpen}
         mode={taskForm.mode}
-        // initialData={taskForm.taskId ? tasks.find(t => t.id === taskForm.taskId) : null}
+        initialData={
+          getTaskId ? tasksList.find((t) => t.id === getTaskId) : null
+        }
         // users={users}
         // projects={projects}
         // loading={loading.tasks}

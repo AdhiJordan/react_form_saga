@@ -8,6 +8,7 @@ import {
   takeLatest,
   race,
   delay,
+  select,
 } from "redux-saga/effects";
 import { mockApi } from "../../api/mockApi";
 
@@ -119,8 +120,9 @@ function* updateTaskSaga(action) {
 function* deleteTaskSaga(action) {
   const { id } = action.payload;
   const tasks = yield select(getTasks);
+  console.log("tasks", tasks, id);
   const taskToDelete = tasks.find((t) => t.id === id);
-
+  console.log("taskToDelete", taskToDelete);
   if (!taskToDelete) {
     yield put({
       type: DELETE_TASK_FAILURE,
