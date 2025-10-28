@@ -87,25 +87,6 @@ const TaskForm = ({
     }
   }, [initialData, reset]);
 
-  // const {
-  //   register,
-  //   watch,
-  //   handleSubmit,
-  //   control,
-  //   formState: { isValid, errors },
-  // } = useForm({
-  //   mode: "onChange",
-  //   defaultValues: initialData || {
-  //     title: "",
-  //     description: "",
-  //     taskType: "Feature",
-  //     priority: "Medium",
-  //     acceptanceCriteria: [""],
-  //     subtasks: [{ title: "", completed: false }],
-  //     researchQuestions: [{ value: "" }],
-  //   },
-  // });
-
   const {
     fields: acceptanceCriteriaFields,
     append: appendCriteria,
@@ -527,7 +508,10 @@ const TaskForm = ({
             <button type="button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" disabled={loading || !isValid}>
+            <button
+              type="submit"
+              //disabled={loading || !isValid}
+            >
               {loading
                 ? "Saving..."
                 : mode === "create"

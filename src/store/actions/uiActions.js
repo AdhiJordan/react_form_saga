@@ -37,3 +37,24 @@ export const editMode = (mode) => ({
   type: SET_FORM_MODE,
   payload: mode,
 });
+
+// export const setFilters = (filters) => ({
+//   type: SET_FILTERS,
+//   payload: filters,
+// });
+
+export const setFilter = (key, value) => ({
+  type: SET_FILTERS,
+  payload: { [key]: value },
+});
+
+// Clear all filters to default state
+export const clearFilters = () => ({
+  type: CLEAR_FILTERS,
+});
+
+// Set/update the search term for filter/Search Bar
+export const setSearch = (searchTerm) => ({
+  type: SET_SEARCH,
+  payload: searchTerm,
+});

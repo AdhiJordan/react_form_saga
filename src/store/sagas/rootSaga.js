@@ -8,6 +8,7 @@ import {
   watchUpdateTask,
   watchDeleteTask,
 } from "./taskSagas";
+import { watchOpenTaskForm, watchFilters } from "./uiSagas";
 
 export default function* rootSaga() {
   yield all([
@@ -17,5 +18,7 @@ export default function* rootSaga() {
     watchCreateTask(),
     watchUpdateTask(),
     watchDeleteTask(),
+    watchOpenTaskForm(),
+    watchFilters(),
   ]);
 }

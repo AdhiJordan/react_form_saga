@@ -110,8 +110,15 @@ const TaskDashboard = () => {
       subtasks: subtasksWithIds,
     };
     console.log("####", task);
+    if (taskForm.mode === "edit") {
+      dispatch({
+        type: "UPDATE_TASK_REQUEST",
+        payload: { id: getTaskId, updates: task },
+      });
+    } else {
+      dispatch({ type: "CREATE_TASK_REQUEST", payload: task });
+    }
 
-    dispatch({ type: "CREATE_TASK_REQUEST", payload: task });
     dispatch(closeTaskForm(false));
   };
 
@@ -123,6 +130,9 @@ const TaskDashboard = () => {
   const handleFiltersChange = (newFilters) => {
     // TODO: Dispatch filter change action
   };
+
+  const listofProjects = useSelector((state) => state.projects.items);
+  const users = useSelector((state) => state.users.items);
 
   console.log("taskForm", taskForm);
 
@@ -144,8 +154,8 @@ const TaskDashboard = () => {
 
       <FilterBar
         // filters={filters}
-        // projects={projects}
-        // users={users}
+        projects={listofProjects}
+        users={users}
         onFiltersChange={handleFiltersChange}
       />
 
