@@ -24,6 +24,11 @@ const uiReducer = (state = initialState, action) => {
         ...state,
         taskForm: { ...state.taskForm, mode: action.payload },
       };
+    case "SET_SEARCH":
+      return {
+        ...state,
+        filters: { ...state.filters, search: action.payload },
+      };
     case "SET_FILTERS":
       return {
         ...state,

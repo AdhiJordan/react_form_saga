@@ -33,26 +33,15 @@ const FilterBar = ({
 
   // TODO: Implement debounced search with useEffect and setTimeout
 
-  // const handleFilterChange = (filterKey, value) => {
-  //   onFiltersChange({
-  //     ...filters,
-  //     [filterKey]: value,
-  //   });
-  // };
-
-  // const clearAllFilters = () => {
-  //   setSearchInput("");
-  //   onFiltersChange({
-  //     projectId: null,
-  //     assigneeId: null,
-  //     status: "all",
-  //     taskType: "all",
-  //     search: "",
-  //   });
-  // };
-
   // Debounced search
-  useEffect(() => {
+  React.useEffect(() => {
+    if (filters.search !== searchInput) {
+      setSearchInput(filters.search || "");
+    }
+  }, [filters.search]);
+
+  // Debounce dispatch of search changes
+  React.useEffect(() => {
     const handler = setTimeout(() => {
       if (searchInput !== filters.search) {
         dispatch(setSearch(searchInput));
@@ -69,6 +58,8 @@ const FilterBar = ({
     setSearchInput("");
     dispatch(clearFilters());
   };
+
+  console.log("filters", filters);
 
   const activeFilterCount = [
     filters.projectId ? 1 : 0,
